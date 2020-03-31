@@ -7,9 +7,6 @@ Recommendation
 
 ## Setup enviroment
 
-### First move to api directory
-`$ cd api`
-
 ### Create virtula enviroment
 
 `$ python -m venv env`
@@ -45,12 +42,3 @@ Note
 
 `$ flask db upgrade`
 
-## Run scripts
-
-### Run React
-
-`$ npm start`
-
-### Run Flask
-
-`$ npm run start-api`
