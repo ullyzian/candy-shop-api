@@ -1,11 +1,14 @@
-# enviroment
+# Enviroment
 env/
 
-# python
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
 
-# database
+# Database
 migrations/
 *.sqlite
+
+# Editor
+.vscode/settings.json
