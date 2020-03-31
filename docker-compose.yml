@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  # Backend API
+  candy-shop-api:
+    container_name: backend
+    build: ./
+    command: flask run --host 0.0.0.0
+    working_dir: /usr/src/candy-shop-api
+    # "HOST:CONTAINER"
+    # Container - flask app port inside of container
+    # Host - flask app port on your machine
+    ports:
+      - '8000:5000'
+    # If something changes in this folder, pushes it to container (kinda nodemone)
+    volumes:
+      - ./:/usr/src/candy-shop-api
+  # Postgres DB
+  postgres:
+    container_name: postgres-db
+    build: ./postgres
+    ports:
+      - '5431:5432'
+    env_file:
+      - ./.private/postgres.env
