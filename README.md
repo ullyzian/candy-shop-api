@@ -48,7 +48,9 @@ Note
 ## Run scripts
 
 ### Run React
+
 `$ npm start`
 
 ### Run Flask
-`$ npm start-api`
+
+`$ npm run start-api`
