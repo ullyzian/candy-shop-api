@@ -5,7 +5,11 @@ services:
   candy-shop-api:
     container_name: backend
     build: ./
-    command: flask run --host 0.0.0.0
+    command: bash -c "
+      flask db migrate
+      && flask db upgrade
+      && flask run --host 0.0.0.0
+      "
     working_dir: /usr/src/candy-shop-api
     # "HOST:CONTAINER"
     # Container - flask app port inside of container

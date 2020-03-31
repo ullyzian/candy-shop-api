@@ -1,7 +1,16 @@
+from datetime import datetime
+from dataclasses import dataclass
 from core import db as models
 
 
+@dataclass
 class User(models.Model):
+    id: int
+    username: str
+    email: str
+    password_hash: str
+    created_at: datetime
+
     id = models.Column(models.Integer, primary_key=True)
     username = models.Column(models.String(60), index=True, unique=True)
     email = models.Column(models.String(120), index=True, unique=True)
@@ -10,12 +19,17 @@ class User(models.Model):
     order_item = models.relationship("OrderItem", backref="user", lazy="dynamic")
     order = models.relationship("Order", backref="user", lazy="dynamic")
 
-
     def __repr__(self):
         return f"<User {self.username}>"
 
 
+@dataclass
 class Item(models.Model):
+    id: int
+    title: str
+    price: float
+    description: str
+
     id = models.Column(models.Integer, primary_key=True)
     title = models.Column(models.String(50))
     price = models.Column(models.Float)
@@ -27,6 +41,7 @@ class Item(models.Model):
 
 
 class OrderItem(models.Model):
+
     id = models.Column(models.Integer, primary_key=True)
     item_id = models.Column(models.Integer, models.ForeignKey("item.id"))
     user_id = models.Column(models.Integer, models.ForeignKey("user.id"))
@@ -38,11 +53,15 @@ class OrderItem(models.Model):
         return f"<OrderItem {self.item.title}>"
 
 
+@dataclass
 class Order(models.Model):
+    id: int
+    user_id: int
+    created_at: datetime
+
     id = models.Column(models.Integer, primary_key=True)
     user_id = models.Column(models.Integer, models.ForeignKey("user.id"))
     created_at = models.Column(models.DateTime, index=True, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"<Item {self.}>"
-
+        return f"<Item {self.user.username}>"

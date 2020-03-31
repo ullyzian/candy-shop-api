@@ -1,3 +1,3 @@
 FLASK_APP=manage.py
 FLASK_ENV = 'development'
-DATABASE_URL=''
+DATABASE_URL='postgresql://username:password@postgres/candy-shop'
