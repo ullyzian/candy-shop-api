@@ -6,12 +6,13 @@ class User(models.Model):
     username = models.Column(models.String(60), index=True, unique=True)
     email = models.Column(models.String(120), index=True, unique=True)
     password_hash = models.Column(models.String(128))
-    order_item = models.relationship("OrderItem", backref="author", lazy="dynamic")
-    order = models.relationship("Order", backref="author", lazy="dynamic")
+    created_at = models.Column(models.DateTime, index=True, default=datetime.utcnow)
+    order_item = models.relationship("OrderItem", backref="user", lazy="dynamic")
+    order = models.relationship("Order", backref="user", lazy="dynamic")
 
 
     def __repr__(self):
-        return f"User {self.username}"
+        return f"<User {self.username}>"
 
 
 class Item(models.Model):
@@ -19,7 +20,7 @@ class Item(models.Model):
     title = models.Column(models.String(50))
     price = models.Column(models.Float)
     description = models.Column(models.Text)
-    order_item = models.relationship("OrderItem", uselist=False, back_populates="item")
+    order_item = models.relationship("OrderItem", uselist=False, backref="item")
 
     def __repr__(self):
         return f"<Item {self.title}>"
@@ -28,12 +29,20 @@ class Item(models.Model):
 class OrderItem(models.Model):
     id = models.Column(models.Integer, primary_key=True)
     item_id = models.Column(models.Integer, models.ForeignKey("item.id"))
-    # back reference one to one relation to "Item"
-    item = models.relationship("Item", back_populates="orderitem")
     user_id = models.Column(models.Integer, models.ForeignKey("user.id"))
+    order_id = models.Column(models.Integer, models.ForeignKey("order.id"))
+    order = models.relationship("Order", backref="orderitem")
     quantity = models.Column(models.Integer)
+
+    def __repr__(self):
+        return f"<OrderItem {self.item.title}>"
 
 
 class Order(models.Model):
     id = models.Column(models.Integer, primary_key=True)
     user_id = models.Column(models.Integer, models.ForeignKey("user.id"))
+    created_at = models.Column(models.DateTime, index=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"<Item {self.}>"
+
