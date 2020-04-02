@@ -3,7 +3,6 @@ import time
 from flask import jsonify
 from core.models import User
 
-
 @app.route("/time")
 def get_current_time():
     data = {
