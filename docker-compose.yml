@@ -1,29 +1,28 @@
 version: '3.7'
 
 services:
-  # Backend API
-  candy-shop-api:
+  api:
     container_name: backend
-    build: ./
-    environment:
-      DATABASE_URL: 'postgresql+psycopg2://username:password@postgres/candy-shop'
-    command: bash -c "flask db migrate && flask db upgrade && flask run --host 0.0.0.0"
-    working_dir: /usr/src/candy-shop-api
-    # "HOST:CONTAINER"
-    # Container - flask app port inside of container
-    # Host - flask app port on your machine
+    restart: always
+    build: .
     ports:
       - '8000:5000'
-    # If something changes in this folder, pushes it to container (kinda nodemone)
     volumes:
-      - ./:/usr/src/candy-shop-api
-    restart: always
-  # Postgres DB
+      - ./:/usr/src/api/
+    depends_on: 
+      - postgres
+    entrypoint: /usr/src/api//scripts/docker_script.sh
   postgres:
-    container_name: postgres-db
+    container_name: postgres
+    restart: always
     image: postgres:12.2
     ports:
-      - '5431:5432'
+      - '5432:5432'
     env_file:
       - ./.private/postgres.env
-    restart: always
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+  
+volumes: 
+  postgres_data:
+    name: postgres_data

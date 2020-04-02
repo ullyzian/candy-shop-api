@@ -1,12 +1,11 @@
 FROM python:3.8
 
-WORKDIR /usr/src/candy-shop-api
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+WORKDIR /usr/src/api
 
 COPY ./ ./
 
 RUN pip install -U pip setuptools wheel && pip install -r requirements.txt
 
-CMD ["/bin/bash"]
+EXPOSE 5000
+
+
