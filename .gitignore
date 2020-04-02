@@ -12,3 +12,6 @@ migrations/
 
 # Editor
 .vscode/settings.json
+
+# Mac
+.DS_Store
