@@ -11,7 +11,7 @@ migrations/
 *.sqlite
 
 # Editor
-.vscode/settings.json
+.vscode/
 
 # Mac
 .DS_Store
