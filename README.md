@@ -28,17 +28,23 @@ Note
 
 `$ deactivate`
 
-## Setup sqlite database
+## Setup application and database
 
-### Initialization
+### Choose application mode ("dev", "prod", "docker") in .flaskenv file
 
-`$ flask db init`
+`FLASK_ENV="your_mode"`
 
-### Migrate database
+Note:
+- "dev" run application without docker with sqlite database
+- "prod" run docker-compose with postgresql
+- "docker" run docker-compose with postgresql with DEBUG=True
 
-`$ flask db migrate -m "your migration message"`
+##### For more info visit config.py file
 
-### Apply migrations to database
+### Recreate database sqlite
 
-`$ flask db upgrade`
+`$ flask manage.py recreate_db`
 
+### Run server
+
+`$ flask manage.py runserver`
