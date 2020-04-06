@@ -11,4 +11,4 @@ ENV WAIT_VERSION 2.7.2
 ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait ./scripts/wait
 RUN chmod +x ./scripts/wait
 
-CMD ["./scripts/docker_script.sh"]
+CMD ["./scripts/docker_script"]
