@@ -1,10 +1,10 @@
-FROM python:3.8
+FROM python:3.7
 
-WORKDIR /usr/src/api
+RUN pip install poetry
 
+WORKDIR /tmp/api
 COPY ./ ./
-
-RUN pip install -U pip setuptools wheel && pip install -r requirements.txt
+RUN poetry install
 
 # Add docker-compose-wait tool
 ENV WAIT_VERSION 2.7.2
