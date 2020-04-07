@@ -20,24 +20,24 @@ def add_orderitem():
 
 @app.route("/orderitems/<id>", methods=["GET"])
 def get_orderitem(id):
-    item = OrderItem.query.get(id)
-    return orderitem_schema.dump(item)
+    orderitem = OrderItem.query.get(id)
+    return orderitem_schema.dump(orderitem)
 
 
 @app.route("/orderitems", methods=["GET"])
 def get_orderitems():
-    items = OrderItem.query.all()
-    result = orderitems_schema.dump(items)
+    orderitems = OrderItem.query.all()
+    result = orderitems_schema.dump(orderitems)
     return jsonify(result)
 
 
 @app.route("/orderitems/<id>", methods=["DELETE"])
 def delete_orderitem(id):
-    item = OrderItem.query.get(id)
-    db.session.delete(item)
+    orderitem = OrderItem.query.get(id)
+    db.session.delete(orderitem)
     db.session.commit()
 
-    return orderitem_schema.dump(item)
+    return orderitem_schema.dump(orderitem)
 
 
 @app.route("/orderitems/<id>", methods=["PUT"])

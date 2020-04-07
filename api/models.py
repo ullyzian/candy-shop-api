@@ -4,8 +4,8 @@ from api import db
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50))
-    price = db.Column(db.Float)
+    title = db.Column(db.String(50), nullable=False)
+    price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
     order_item = db.relationship("OrderItem", uselist=False, backref="item")
 
