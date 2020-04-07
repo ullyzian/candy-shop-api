@@ -1,13 +1,24 @@
 from api import ma
-from api.models import User
+from api.models import Item, OrderItem
 
 
-# Shemas
-class UserShema(ma.SQLAlchemyAutoSchema):
+class ItemSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = User
+        model = Item
+
+
+class OrderItemSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = OrderItem
+        include_fk = True
 
 
 # Init shemas
-user_shema = UserShema()
-users_shema = UserShema(many=True)
+
+# Item
+item_schema = ItemSchema()
+items_schema = ItemSchema(many=True)
+
+# OrderItem
+orderitem_schema = OrderItemSchema()
+orderitems_schema = OrderItemSchema(many=True)
