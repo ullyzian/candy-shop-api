@@ -28,9 +28,8 @@ Migrate(app, db)
 # Shemas
 ma = Marshmallow(app)
 
-# Views
-from api import views
-
 
 def create_app():
+    # Routes
+    from api import routes
     return app
