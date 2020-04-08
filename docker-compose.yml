@@ -17,6 +17,8 @@ services:
     depends_on:
       - postgres
     command: sh -c "./scripts/wait && ./scripts/docker_script"
+    volumes: 
+      - ./api:/tmp/api/api
     environment:
       - WAIT_HOSTS=postgres:5432
       - WAIT_HOSTS_TIMEOUT=150
