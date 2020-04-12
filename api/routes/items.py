@@ -28,7 +28,7 @@ def get_item(id):
 def get_items():
     items = Item.query.all()
     result = items_schema.dump(items)
-    return jsonify(result)
+    return jsonify({"result": result})
 
 
 @app.route("/items/<id>", methods=["DELETE"])

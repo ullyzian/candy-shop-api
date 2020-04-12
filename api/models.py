@@ -1,18 +1,19 @@
 from datetime import datetime
 from api import db
 
-
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False)
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text)
+    img = db.Column(db.Text)
     order_item = db.relationship("OrderItem", uselist=False, backref="item")
 
-    def __init__(self, title, price, description):
-        self.title = title
+    def __init__(self, title, price, description, img):
+        self.name = title
         self.price = price
         self.description = description
+        self.img = img
 
     def __repr__(self):
         return f"<Item {self.title}>"
