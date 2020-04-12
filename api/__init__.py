@@ -25,11 +25,12 @@ if not database_exists(db_url):
 db = SQLAlchemy(app)
 Migrate(app, db)
 
-# Shemas
+# Schemas
 ma = Marshmallow(app)
 
 
 def create_app():
     # Routes
     from api import routes
+    from api import seeds
     return app

@@ -9,9 +9,9 @@ services:
     env_file:
       - ./.private/postgres.env
   api:
-    container_name: backend
+    container_name: backend-shop
     build: .
-    restart: on-failure
+    restart: always
     ports:
       - '8000:8000'
     depends_on:
