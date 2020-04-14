@@ -2,7 +2,7 @@
 name = "candy-shop-api"
 version = "0.1.0"
 description = ""
-authors = ["Viktor Ashcheulov"]
+authors = ["Viktor Ashcheulov & Maksim Pautsina"]
 
 [tool.poetry.dependencies]
 python = "^3.7"

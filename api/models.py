@@ -16,7 +16,7 @@ class Item(db.Model):
         self.img = img
 
     def __repr__(self):
-        return f"<Item {self.title}>"
+        return f"<Item {self.name}>"
 
 
 class OrderItem(db.Model):
