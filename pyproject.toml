@@ -15,7 +15,6 @@ flask-sqlalchemy = "^2.4.1"
 marshmallow-sqlalchemy = "^0.22.3"
 sqlalchemy_utils = "^0.36.3"
 python-dotenv = "^0.12.0"
-psycopg2 = "^2.8.5"
 gunicorn = "^20.0.4"
 
 [tool.poetry.dev-dependencies]

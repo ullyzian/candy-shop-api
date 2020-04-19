@@ -7,16 +7,14 @@ from flask_marshmallow import Marshmallow
 from sqlalchemy_utils import create_database, database_exists
 
 # Local files import
-from api.config import config
+from api.config import Config
 
 app = Flask(__name__)
 
 # Cors
 CORS(app)
 
-# Config
-env = os.environ.get("FLASK_ENV", "dev")
-app.config.from_object(config[env])
+app.config.from_object(Config)
 
 # Models
 db_url = app.config["SQLALCHEMY_DATABASE_URI"]
@@ -33,4 +31,5 @@ def create_app():
     # Routes
     from api import routes
     from api import seeds
+
     return app

@@ -1,2 +1,2 @@
 FLASK_APP=manage.py
-FLASK_ENV='prod'
+FLASK_ENV=production

@@ -11,6 +11,7 @@ migrations/
 
 # Editor
 .vscode/
+.idea/
 
 # Mac
 .DS_Store
