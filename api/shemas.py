@@ -1,8 +1,15 @@
 from api import ma
-from api.models import Item, OrderItem, Order
+from api.models import Item, OrderItem, Order, Tag
+
+
+class TagSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Tag
 
 
 class ItemSchema(ma.SQLAlchemyAutoSchema):
+    tags = ma.Nested(TagSchema, many=True)
+
     class Meta:
         model = Item
 

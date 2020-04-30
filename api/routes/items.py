@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from api.models import Item
+from api.models import Item, tags_table, Tag
 from api.shemas import item_schema, items_schema
 from api import app, db
 
@@ -29,8 +29,18 @@ def get_items_by_id(ids):
 @app.route("/items", methods=["GET"])
 def get_items():
     search_text = request.args.get("search")
-    search_pattern = "%{}%".format(search_text) if search_text else "%"
-    items = Item.query.filter(Item.name.like(search_pattern)).all()
+    filter_arg = request.args.get("filter")
+    if search_text is not None:
+        search_pattern = "%{}%".format(search_text)
+        items = Item.query.filter(Item.name.like(search_pattern)).all()
+    elif filter_arg is not None:
+        filter_tags = filter_arg.split(";")
+        tags = Tag.query.filter(Tag.label.in_(filter_tags)).all()
+        items_array = [Item.query.filter(Item.tags.any(id=tag.id)).all() for tag in tags]
+        items = set([item for i in items_array for item in i])
+    else:
+        items = Item.query.all()
+
     result = items_schema.dump(items)
 
     return jsonify({"result": result})

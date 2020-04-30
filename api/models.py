@@ -1,6 +1,20 @@
 from datetime import datetime
 from api import db
 
+tags_table = db.Table(
+    "tag_associations",
+    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id")),
+    db.Column("item_id", db.Integer, db.ForeignKey("item.id")),
+)
+
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    label = db.Column(db.String(50), nullable=False, unique=True)
+
+    def __init__(self, label):
+        self.label = label
+
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,15 +23,14 @@ class Item(db.Model):
     description = db.Column(db.Text)
     img = db.Column(db.Text)
     order_item = db.relationship("OrderItem", uselist=False, backref="item")
+    tags = db.relationship("Tag", secondary=tags_table)
 
-    def __init__(self, title, price, description, img):
-        self.name = title
-        self.price = price
-        self.description = description
-        self.img = img
-
-    def __repr__(self):
-        return f"<Item {self.name}>"
+    def __init__(self, *args):
+        self.name = args[0]
+        self.price = args[1]
+        self.description = args[2]
+        self.img = args[3]
+        self.tags = args[4]
 
 
 class OrderItem(db.Model):
