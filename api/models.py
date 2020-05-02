@@ -7,6 +7,15 @@ tags_table = db.Table(
     db.Column("item_id", db.Integer, db.ForeignKey("item.id")),
 )
 
+class TagItemRel(db.Model):
+    rel_id = db.Column(db.Integer, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"), nullable=False)
+    item_id = db.Column(db.Integer, db.ForeignKey("item.id"), nullable=False)
+
+    def __init__(self, tag_id, item_id):
+        self.tag_id = tag_id
+        self.item_id = item_id
+
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
