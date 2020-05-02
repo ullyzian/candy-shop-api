@@ -1,7 +1,8 @@
 from flask import request, jsonify
-from api.models import Item, tags_table, Tag
-from api.shemas import item_schema, items_schema
+from api.models import Item, tags_table, Tag, TagItemRel
+from api.shemas import item_schema, items_schema, tag_item_rel, tags_items_rel
 from api import app, db
+from sqlalchemy.sql import func
 
 
 @app.route("/items", methods=["POST"])
@@ -25,23 +26,43 @@ def get_items_by_id(ids):
     result = items_schema.dump(items)
     return jsonify({"result": result})
 
-
 @app.route("/items", methods=["GET"])
 def get_items():
     search_text = request.args.get("search")
     filter_arg = request.args.get("filter")
+
+    # Basic query
+    query = db.session.query(Item, func.count(Item.id)).group_by(Item.id)
+
     if search_text is not None:
         search_pattern = "%{}%".format(search_text)
-        items = Item.query.filter(Item.name.like(search_pattern)).all()
-    elif filter_arg is not None:
-        filter_tags = filter_arg.split(";")
-        tags = Tag.query.filter(Tag.label.in_(filter_tags)).all()
-        items_array = [Item.query.filter(Item.tags.any(id=tag.id)).all() for tag in tags]
-        items = set([item for i in items_array for item in i])
-    else:
-        items = Item.query.all()
+        # Updating query to select items that satisfy pattern
+        query = query\
+        .filter(Item.name.like(search_pattern))
 
-    result = items_schema.dump(items)
+    if filter_arg is not None:
+        filter_tags = filter_arg.split(";")
+        # Updating query to join tables and filter tags
+        query = query \
+            .join(TagItemRel, Item.id == TagItemRel.item_id) \
+            .join(Tag, TagItemRel.tag_id == Tag.id) \
+            .filter(Tag.label.in_(filter_tags))
+
+    # Executing query
+    query_response = query.all()
+    # Query returns tuples list, tuple format: (item, # of matched filter)
+
+    result = set()
+    for [item, matched_filters] in query_response:
+        # In case filters were passed
+        if filter_arg is not None:
+            # If # of matched tags is smaller then # of passed filters - do not include them into result
+            if len(filter_arg.split(";")) <= matched_filters:
+                result.add(item)
+        else:
+            result.add(item)
+
+    result = items_schema.dump(result)
 
     return jsonify({"result": result})
 
