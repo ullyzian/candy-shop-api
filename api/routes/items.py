@@ -1,6 +1,6 @@
 from flask import request, jsonify
-from api.models import Item, tags_table, Tag, TagItemRel
-from api.shemas import item_schema, items_schema, tag_item_rel, tags_items_rel
+from api.models import Item, Tag, TagItemRel
+from api.shemas import item_schema, items_schema
 from api import app, db
 from sqlalchemy.sql import func
 
@@ -21,10 +21,32 @@ def add_item():
 
 @app.route("/items/<ids>", methods=["GET"])
 def get_items_by_id(ids):
+    include = request.args.get("include")
     id_arr = ids.split(",")
     items = Item.query.filter(Item.id.in_(id_arr)).all()
-    result = items_schema.dump(items)
-    return jsonify({"result": result})
+
+    items = items_schema.dump(items)
+
+    if include is not None:
+        properties_to_include = include.split(";")
+        if "tags" in properties_to_include:
+            db_tags = db.session.query(TagItemRel.item_id, Tag.label)\
+                .join(TagItemRel, Tag.id == TagItemRel.tag_id)\
+                .filter(TagItemRel.item_id.in_(id_arr)).all()
+
+            hash_tags = {}
+            # Formatting result to a hash table
+            for [item_id, tag_name] in db_tags:
+                if item_id in hash_tags:
+                    hash_tags[item_id].append(tag_name)
+                else:
+                    hash_tags[item_id] = [tag_name]
+
+            # Appending tags to items
+            for item in items:
+                item["tags"] = hash_tags[item["id"]]
+
+    return jsonify({"result": items})
 
 @app.route("/items", methods=["GET"])
 def get_items():

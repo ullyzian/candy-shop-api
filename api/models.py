@@ -1,12 +1,6 @@
 from datetime import datetime
 from api import db
 
-tags_table = db.Table(
-    "tag_associations",
-    db.Column("tag_id", db.Integer, db.ForeignKey("tag.id")),
-    db.Column("item_id", db.Integer, db.ForeignKey("item.id")),
-)
-
 class TagItemRel(db.Model):
     rel_id = db.Column(db.Integer, primary_key=True)
     tag_id = db.Column(db.Integer, db.ForeignKey("tag.id"), nullable=False)
@@ -32,14 +26,12 @@ class Item(db.Model):
     description = db.Column(db.Text)
     img = db.Column(db.Text)
     order_item = db.relationship("OrderItem", uselist=False, backref="item")
-    tags = db.relationship("Tag", secondary=tags_table)
 
     def __init__(self, *args):
         self.name = args[0]
         self.price = args[1]
         self.description = args[2]
         self.img = args[3]
-        self.tags = args[4]
 
 
 class OrderItem(db.Model):

@@ -9,7 +9,11 @@ def insert_tags(target, connection, **kwargs):
     tags = [
         "Chocolate",
         "Caramel",
-        "Lactose free"
+        "Lactose free",
+        "Coconut",
+        "Peanut",
+        "Sour",
+        "Nougat"
     ]
 
     # Adding items to Item table
