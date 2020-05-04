@@ -1,11 +1,5 @@
 from api import ma
-from api.models import Item, OrderItem, Order, Tag, TagItemRel
-
-
-class TagItemRelSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = TagItemRel
-        include_fk = True
+from api.models import Item, OrderItem, Order, Tag
 
 class TagSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -44,5 +38,3 @@ orderitems_schema = OrderItemSchema(many=True)
 order_schema = OrderSchema()
 orders_schema = OrderSchema(many=True)
 
-tag_item_rel = TagItemRelSchema()
-tags_items_rel = TagItemRelSchema(many=True)
