@@ -20,8 +20,9 @@ def add_orderitem():
 
 @app.route("/orderitems/<id>", methods=["GET"])
 def get_orderitem(id):
-    orderitem = OrderItem.query.get(id)
-    return orderitem_schema.dump(orderitem)
+    orderitem = OrderItem.query.filter(OrderItem.order_id == id).all()
+    print(orderitem)
+    return jsonify(orderitems_schema.dump(orderitem))
 
 
 @app.route("/orderitems", methods=["GET"])
