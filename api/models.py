@@ -47,12 +47,16 @@ class OrderItem(db.Model):
         self.quantity = args[2]
 
     def __repr__(self):
-        return f"<OrderItem {self.item.title}>"
+        return f"<OrderItem {self.order_id}>"
 
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
 
+    def __init__(self, email):
+        self.email = email;
+    
     def __repr__(self):
         return f"<Item {self.user.username}>"
