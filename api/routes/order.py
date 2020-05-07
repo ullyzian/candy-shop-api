@@ -8,8 +8,12 @@ from api import app, db
 def add_order():
     email = request.json["mail"]
     order_items = request.json["items"]
+    user_id = request.json["user"]
 
     new_order = Order(email)
+
+    if user_id:
+        new_order.user = user_id
 
     db.session.add(new_order)
     db.session.commit()
@@ -43,4 +47,3 @@ def delete_order(id):
     db.session.commit()
 
     return order_schema.dump(order)
-

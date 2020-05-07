@@ -8,12 +8,11 @@ from api.decorators import token_required
 from flask_cors import cross_origin
 
 
-
 @app.route("/login", methods=["POST"])
+@cross_origin()
 def login():
     username = request.json["username"]
     password = request.json["password"]
-    auth = request.authorization
 
     user = User.query.filter(User.username == username).first()
     # checking if entered username exists
@@ -40,10 +39,7 @@ def login():
 @token_required
 def get_user(current_user):
     user = user_schema.dump(current_user)
-    user = {
-        'id': user['id'],
-        'email': user['email']
-    }
+    user = {"id": user["id"], "email": user["email"]}
     return user
 
 

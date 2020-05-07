@@ -23,6 +23,7 @@ class OrderItemSchema(ma.SQLAlchemyAutoSchema):
 class OrderSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Order
+        include_fk = True
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
