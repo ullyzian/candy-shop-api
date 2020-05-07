@@ -14,8 +14,7 @@ def insert_debug(target, connection, **kwargs):
 
     db.session.add(TagItemRel(5, 3))
     db.session.add(TagItemRel(1, 3))
-    
-    db.session.add(TagItemRel(6, 4))
 
+    db.session.add(TagItemRel(6, 4))
 
     db.session.commit()

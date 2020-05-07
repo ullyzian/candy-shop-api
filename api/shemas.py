@@ -1,5 +1,6 @@
 from api import ma
-from api.models import Item, OrderItem, Order, Tag
+from api.models import Item, OrderItem, Order, Tag, User
+
 
 class TagSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -24,7 +25,18 @@ class OrderSchema(ma.SQLAlchemyAutoSchema):
         model = Order
 
 
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    orders = ma.Nested(OrderSchema, many=True)
+
+    class Meta:
+        model = User
+
+
 # Init shemas
+
+# User
+
+user_schema = UserSchema()
 
 # Item
 item_schema = ItemSchema()
@@ -37,4 +49,3 @@ orderitems_schema = OrderItemSchema(many=True)
 # Order
 order_schema = OrderSchema()
 orders_schema = OrderSchema(many=True)
-

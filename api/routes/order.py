@@ -15,7 +15,6 @@ def add_order():
     db.session.commit()
 
     for item in order_items:
-        print(item)
         instance = OrderItem(item["id"], new_order.id, item["quantity"])
         db.session.add(instance)
 
