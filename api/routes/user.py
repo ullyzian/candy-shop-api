@@ -1,8 +1,8 @@
 from api import app, db
 import jwt
 import datetime
-from api.models import User
-from api.shemas import user_schema
+from api.models import User, Order, OrderItem, Item
+from api.shemas import user_schema, orderitems_schema, item_schema
 from flask import request, jsonify
 from api.decorators import token_required
 from flask_cors import cross_origin
@@ -44,8 +44,18 @@ def get_user(current_user):
 
 
 @app.route("/profile", methods=["GET"])
+@cross_origin()
 @token_required
 def profile(current_user):
-    user = user_schema.dump(current_user)
+    profile = user_schema.dump(current_user)
+    for order in profile["orders"]:
+        order_items = OrderItem.query.filter_by(order_id=order["id"]).all()
+        items = []
+        for order_item in order_items:
+            query = Item.query.filter_by(id=order_item.item_id).one()
+            schema = item_schema.dump(query)
+            schema["quantity"] = order_item.quantity
+            items.append(schema)
+        order["items"] = items
 
-    return user
+    return profile

@@ -2,6 +2,7 @@ from flask import jsonify, request
 from api.models import Order, OrderItem
 from api.shemas import order_schema, orders_schema
 from api import app, db
+import datetime
 
 
 @app.route("/order", methods=["POST"])
@@ -10,7 +11,7 @@ def add_order():
     order_items = request.json["items"]
     user_id = request.json["user"]
 
-    new_order = Order(email)
+    new_order = Order(email, datetime.datetime.now())
 
     if user_id:
         new_order.user = user_id

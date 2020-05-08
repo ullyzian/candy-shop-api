@@ -71,7 +71,8 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
     email = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, index=True)
 
-    def __init__(self, email):
+    def __init__(self, email, created_at):
         self.email = email
+        self.created_at = created_at
