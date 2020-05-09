@@ -9,10 +9,11 @@ def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = None
-        if "Authorization" in request.headers:
-            token = request.headers["Authorization"]
-        if not token:
-            return jsonify({"message": "a valid token is missing"})
+        bearerHeader = None
+        try:
+            [bearerHeader, token] = request.headers["Authorization"].split(" ")
+        except:
+            return jsonify({"message": "token is missing"})
 
         try:
             data = jwt.decode(token, app.config["SECRET_KEY"])
