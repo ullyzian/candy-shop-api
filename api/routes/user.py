@@ -33,6 +33,38 @@ def login():
     else:
         return {"message": "User does not exists"}
 
+@app.route("/register", methods=["POST"])
+@cross_origin()
+def register():
+    username = request.json["username"]
+    password = request.json["password"]
+    email = request.json["email"]
+
+    user = User.query.filter(User.username == username).first()
+    # checking if entered username exists
+    if not user:
+        try:
+            new_user = User(username, email)
+            new_user.set_password(password)
+
+            db.session.add(new_user)
+            db.session.commit()
+        except:
+            return jsonify({"message": "An error occured, try again"})
+
+        # token generation
+        token = jwt.encode(
+            {
+                "user_id": new_user.id,
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=200),
+            },
+            app.config["SECRET_KEY"],
+        )
+        return jsonify({"token": token.decode("UTF-8")})
+
+    else:
+        return {"message": "User already exists"}
+
 
 @app.route("/user", methods=["GET"])
 @cross_origin()
@@ -57,5 +89,5 @@ def profile(current_user):
             schema["quantity"] = order_item.quantity
             items.append(schema)
         order["items"] = items
-
+    del profile["password"]
     return profile
